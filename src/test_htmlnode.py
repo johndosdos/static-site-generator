@@ -1,23 +1,17 @@
 import unittest
 
-from htmlnode import HTMLNode
+from htmlnode import HTMLNode, LeafNode
 
 
 class Test(unittest.TestCase):
-    def test1(self):
-        children = []
-        node = HTMLNode("a", "hello", None, {"href": "www.google.com"})
-        children.append(node)
-        node3 = HTMLNode("a", "world", None, {"href": "www.bing.com"})
-        children.append(node3)
-        node2 = HTMLNode("p", "this is a test", children, None)
-        print(node2)
-
-    def test2(self):
-        node = HTMLNode("a", "hello", None, {"href": "www.google.com"})
-        self.assertEqual(node.props_to_html(), f' href="www.google.com"')
-
-        print(node)
+    def test(self):
+        print("\n================TEST START================")
+        leafnode = LeafNode("p", "hello world", {"id": "container", "class": "one"})
+        self.assertEqual(
+            leafnode.to_html(), '<p id="container" class="one">hello world</p>'
+        )
+        print(leafnode.to_html())
+        print("\n================TEST END================")
 
 
 if __name__ == "__main__":
