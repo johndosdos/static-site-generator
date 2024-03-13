@@ -1,16 +1,30 @@
 import unittest
 
-from htmlnode import HTMLNode, LeafNode
+from htmlnode import *
 
 
 class Test(unittest.TestCase):
     def test(self):
         print("\n================TEST START================")
-        leafnode = LeafNode("p", "hello world", {"id": "container", "class": "one"})
-        self.assertEqual(
-            leafnode.to_html(), '<p id="container" class="one">hello world</p>'
+        parentnode = ParentNode(
+            "p",
+            [
+                LeafNode("b", "Bold text"),
+                LeafNode(None, "Normal text"),
+                ParentNode(
+                    "p",
+                    [
+                        LeafNode("b", "Bold text"),
+                        LeafNode(None, "Normal text"),
+                        LeafNode("i", "italic text"),
+                        LeafNode(None, "Normal text"),
+                    ],
+                ),
+            ],
         )
-        print(leafnode.to_html())
+
+        print(parentnode.to_html())
+
         print("\n================TEST END================")
 
 
