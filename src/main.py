@@ -3,6 +3,15 @@ from htmlnode import *
 
 
 def textnode_to_htmlnode(text_node):
+    """
+    Generate an HTML representation of a text node based on its text_type.
+
+    Parameters:
+        text_node (TextNode): The text node to be converted to HTML.
+
+    Returns:
+        LeafNode: An HTML representation of the text node.
+    """
     if text_node.text_type == "text":
         return LeafNode(None, text_node.text, None)
 
