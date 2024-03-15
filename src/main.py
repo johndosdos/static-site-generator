@@ -1,5 +1,22 @@
 from textnode import TextNode
 from htmlnode import *
+import re
+
+
+def extract_markdown_links(text):
+    pattern = re.compile(r"\[(.*?)\]\((.*?)\)")
+    matches = pattern.findall(text)
+
+    title_url_list = [match for match in matches]
+    return title_url_list
+
+
+def extract_markdown_images(text):
+    pattern = re.compile(r"!\[(.*?)\]\((.*?)\)")
+    matches = pattern.findall(text)
+
+    alttext_imgurl_list = [match for match in matches]
+    return alttext_imgurl_list
 
 
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
@@ -72,11 +89,19 @@ def main():
     node2 = TextNode("hello world", "bold", "google.com")
     node3 = TextNode("this is a `code block`", "text")
 
-    html_node1 = textnode_to_htmlnode(node1)
+    # html_node1 = textnode_to_htmlnode(node1)
     # print(html_node1.to_html())
 
-    new_node = split_nodes_delimiter([node3], "`", "code")
-    print(new_node)
+    # new_node = split_nodes_delimiter([node3], "`", "code")
+    # print(new_node)
+
+    image_text = "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png) and ![another](https://i.imgur.com/dfsdkjfd.png)"
+    extracted_alttext_imgurl = extract_markdown_images(image_text)
+    print(extracted_alttext_imgurl)
+
+    link_text = "This is text with a [link](https://www.example.com) and [another](https://www.example.com/another)"
+    extracted_title_url = extract_markdown_links(link_text)
+    print(extracted_title_url)
 
 
 main()
