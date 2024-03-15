@@ -1,5 +1,14 @@
 class HTMLNode:
     def __init__(self, tag=None, value=None, children=None, props=None):
+        """
+        Initializes the class with the given tag, value, children, and props.
+
+        Parameters:
+            tag (optional): The tag for the element.
+            value (optional): The value associated with the element.
+            children (optional): The children elements.
+            props (optional): The properties of the element.
+        """
         self.tag = tag
         self.value = value
         self.children = children
