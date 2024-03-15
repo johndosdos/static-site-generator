@@ -19,22 +19,17 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
     for node in old_nodes:
 
         if node.text_type == "text":
-            # split node at delimiter
             split_node_text = node.text.split(delimiter)
 
             for i, text in enumerate(split_node_text):
                 # the word with delimiter will always have an odd index after the split,
                 # provided that the delimiter is a pair.
-
-                # process the word with delimiter
                 if i % 2 == 1:
                     list_split_nodes.append(TextNode(text, text_type))
 
-                # exclude trailing whitespace
                 elif text != "":
                     list_split_nodes.append(TextNode(text, node.text_type))
 
-        # if node is already processed
         else:
             list_split_nodes.append(node)
 
