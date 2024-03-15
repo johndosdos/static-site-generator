@@ -77,9 +77,13 @@ def textnode_to_htmlnode(text_node):
 def main():
     node1 = TextNode("hello world", "link", "google.com")
     node2 = TextNode("hello world", "bold", "google.com")
+    node3 = TextNode("this is a `code block`", "text")
 
     html_node1 = textnode_to_htmlnode(node1)
-    print(html_node1.to_html())
+    # print(html_node1.to_html())
+
+    new_node = split_nodes_delimiter([node3], "`", "code")
+    print(new_node)
 
 
 main()
