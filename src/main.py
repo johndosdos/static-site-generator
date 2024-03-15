@@ -17,28 +17,26 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
     list_split_nodes = []
 
     for node in old_nodes:
-        # split node at delimiter
-        split_node_text = node.text.split(delimiter)
 
         if node.text_type == "text":
-            for text in split_node_text:
+            # split node at delimiter
+            split_node_text = node.text.split(delimiter)
+
+            for i, text in enumerate(split_node_text):
                 # the word with delimiter will always have an odd index after the split,
                 # provided that the delimiter is a pair.
 
                 # process the word with delimiter
-                if split_node_text.index(text) % 2 == 1:
-                    list_split_nodes.extend([TextNode(text, text_type)])
+                if i % 2 == 1:
+                    list_split_nodes.append(TextNode(text, text_type))
 
                 # exclude trailing whitespace
-                elif text == "":
-                    continue
-
-                else:
-                    list_split_nodes.extend([TextNode(text, node.text_type)])
+                elif text != "":
+                    list_split_nodes.append(TextNode(text, node.text_type))
 
         # if node is already processed
         else:
-            list_split_nodes.extend([node])
+            list_split_nodes.append(node)
 
     return list_split_nodes
 
