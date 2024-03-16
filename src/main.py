@@ -21,17 +21,21 @@ def split_nodes_image(old_nodes):
     img_textnodes_list = []
 
     for node in old_nodes:
-        string_list = re.split(r"(!\[.*?\]\(.*?\))", node.text)
+        if re.search(r"(!\[.*?\]\(.*?\))", node.text):
+            string_list = re.split(r"(!\[.*?\]\(.*?\))", node.text)
 
-        for idx, string in enumerate(string_list):
-            if idx % 2 == 1:
-                split_md_image = extract_markdown_images(string)
-                img_textnodes_list.append(
-                    TextNode(split_md_image[0][0], "image", split_md_image[0][1])
-                )
+            for idx, string in enumerate(string_list):
+                if idx % 2 == 1:
+                    split_md_image = extract_markdown_images(string)
+                    img_textnodes_list.append(
+                        TextNode(split_md_image[0][0], "image", split_md_image[0][1])
+                    )
 
-            elif string != "":
-                img_textnodes_list.append(TextNode(string, "text"))
+                elif string != "":
+                    img_textnodes_list.append(TextNode(string, "text"))
+
+        else:
+            img_textnodes_list.append(node)
 
     return img_textnodes_list
 
@@ -40,17 +44,21 @@ def split_nodes_link(old_nodes):
     link_textnodes_list = []
 
     for node in old_nodes:
-        string_list = re.split(r"(\[.*?\]\(.*?\))", node.text)
+        if re.search(r"(\[.*?\]\(.*?\))", node.text):
+            string_list = re.split(r"(\[.*?\]\(.*?\))", node.text)
 
-        for idx, string in enumerate(string_list):
-            if idx % 2 == 1:
-                split_md_link = extract_markdown_links(string)
-                link_textnodes_list.append(
-                    TextNode(split_md_link[0][0], "link", split_md_link[0][1])
-                )
+            for idx, string in enumerate(string_list):
+                if idx % 2 == 1:
+                    split_md_link = extract_markdown_links(string)
+                    link_textnodes_list.append(
+                        TextNode(split_md_link[0][0], "link", split_md_link[0][1])
+                    )
 
-            elif string != "":
-                link_textnodes_list.append(TextNode(string, "text"))
+                elif string != "":
+                    link_textnodes_list.append(TextNode(string, "text"))
+
+        else:
+            link_textnodes_list.append(node)
 
     return link_textnodes_list
 
