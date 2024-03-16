@@ -128,41 +128,22 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
     return list_split_nodes
 
 
-def textnode_to_htmlnode(text_node):
-    """
-    Generate an HTML representation of a text node based on its text_type.
+def text_to_textnodes(text):
+    node_list = [TextNode(text, "text")]
+    node_list = split_nodes_delimiter(node_list, "**", "bold")
+    node_list = split_nodes_delimiter(node_list, "*", "italic")
+    node_list = split_nodes_delimiter(node_list, "`", "code")
+    node_list = split_nodes_image(node_list)
+    node_list = split_nodes_link(node_list)
 
-    Parameters:
-        text_node (TextNode): The text node to be converted to HTML.
-
-    Returns:
-        LeafNode: An HTML representation of the text node.
-    """
-    if text_node.text_type == "text":
-        return LeafNode(None, text_node.text, None)
-
-    if text_node.text_type == "bold":
-        return LeafNode("b", text_node.text, None)
-
-    if text_node.text_type == "italic":
-        return LeafNode("i", text_node.text, None)
-
-    if text_node.text_type == "code":
-        return LeafNode("code", text_node.text, None)
-
-    if text_node.text_type == "link":
-        return LeafNode("a", text_node.text, {"href": text_node.url})
-
-    if text_node.text_type == "image":
-        return LeafNode("img", "", {"src": text_node.url, "alt": ""})
-
-    raise Exception("Invalid TextNode text_type")
+    return node_list
 
 
 def main():
-    text = "This is a text containing a link: [google](https://www.google.com/)"
-    link_textnode = TextNode(text, "link")
-    link_textnodes_list = split_nodes_link([link_textnode])
+    text = "This is **text** with an *italic* word and a `code block` and an ![image](https://i.imgur.com/zjjcJKZ.png) and a [link](https://boot.dev)"
+    textnodes_list = text_to_textnodes(text)
+
+    return textnodes_list
 
 
 main()
