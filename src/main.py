@@ -7,16 +7,14 @@ def extract_markdown_links(text):
     pattern = re.compile(r"\[(.*?)\]\((.*?)\)")
     matches = pattern.findall(text)
 
-    title_url_list = [match for match in matches]
-    return title_url_list
+    return matches
 
 
 def extract_markdown_images(text):
     pattern = re.compile(r"!\[(.*?)\]\((.*?)\)")
     matches = pattern.findall(text)
 
-    alttext_imgurl_list = [match for match in matches]
-    return alttext_imgurl_list
+    return matches
 
 
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
