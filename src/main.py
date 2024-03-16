@@ -17,6 +17,26 @@ def extract_markdown_images(text):
     return matches
 
 
+def split_nodes_image(old_nodes):
+    img_textnodes_list = []
+
+    for node in old_nodes:
+        string_list = re.split(r"(!\[.*?\]\(.*?\))", node.text)
+
+        for idx, string in enumerate(string_list):
+            if idx % 2 == 1:
+                split_md_image = extract_markdown_images(string)
+                img_textnodes_list.append(
+                    TextNode(split_md_image[0][0], "image", split_md_image[0][1])
+                )
+
+            elif string != "":
+                img_textnodes_list.append(TextNode(string, "text"))
+
+    return img_textnodes_list
+
+
+
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
     """
     A function that splits nodes based on a delimiter, processes the text, and returns a list of split nodes.
