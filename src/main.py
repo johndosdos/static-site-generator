@@ -36,6 +36,24 @@ def split_nodes_image(old_nodes):
     return img_textnodes_list
 
 
+def split_nodes_link(old_nodes):
+    link_textnodes_list = []
+
+    for node in old_nodes:
+        string_list = re.split(r"(\[.*?\]\(.*?\))", node.text)
+
+        for idx, string in enumerate(string_list):
+            if idx % 2 == 1:
+                split_md_link = extract_markdown_links(string)
+                link_textnodes_list.append(
+                    TextNode(split_md_link[0][0], "link", split_md_link[0][1])
+                )
+
+            elif string != "":
+                link_textnodes_list.append(TextNode(string, "text"))
+
+    return link_textnodes_list
+
 
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
     """
@@ -103,23 +121,9 @@ def textnode_to_htmlnode(text_node):
 
 
 def main():
-    node1 = TextNode("hello world", "link", "google.com")
-    node2 = TextNode("hello world", "bold", "google.com")
-    node3 = TextNode("this is a `code block`", "text")
-
-    # html_node1 = textnode_to_htmlnode(node1)
-    # print(html_node1.to_html())
-
-    # new_node = split_nodes_delimiter([node3], "`", "code")
-    # print(new_node)
-
-    image_text = "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png) and ![another](https://i.imgur.com/dfsdkjfd.png)"
-    extracted_alttext_imgurl = extract_markdown_images(image_text)
-    print(extracted_alttext_imgurl)
-
-    link_text = "This is text with a [link](https://www.example.com) and [another](https://www.example.com/another)"
-    extracted_title_url = extract_markdown_links(link_text)
-    print(extracted_title_url)
+    text = "This is a text containing a link: [google](https://www.google.com/)"
+    link_textnode = TextNode(text, "link")
+    link_textnodes_list = split_nodes_link([link_textnode])
 
 
 main()
