@@ -142,6 +142,31 @@ def markdown_to_blocks(markdown):
     return block_list
 
 
+def block_to_block_type(markdown):
+    HEADING = r"\#+\s"
+    CODE = r"^\`{3}[\s\S]*?\`{3}$"
+    QUOTE = r"\>\s"
+    UNORDERED_LIST = r"[\*|\-]\s"
+    ORDERED_LIST = r"\d.\s"
+
+    if re.match(HEADING, markdown):
+        return "Block type: Heading"
+
+    if re.search(CODE, markdown):
+        return "Block type: Code"
+
+    if re.match(QUOTE, markdown):
+        return "Block type: Quote"
+
+    if re.match(UNORDERED_LIST, markdown):
+        return "Block type: Unordered List"
+
+    if re.match(ORDERED_LIST, markdown):
+        return "Block type: Ordered List"
+
+    return "Block type: Paragraph"
+
+
 def text_to_textnodes(text):
     node_list = [TextNode(text, "text")]
     node_list = split_nodes_delimiter(node_list, "**", "bold")
@@ -154,16 +179,25 @@ def text_to_textnodes(text):
 
 
 def main():
-    markdown = """This is **bolded** paragraph 
+    heading_block = "# This is a heading"
+    code_block = """```
+code
 
-This is another paragraph with *italic* text and `code` here 
-This is the same paragraph on a new line 
+block
 
-* This is a list 
-* with items """
+```"""
+    quote_block = "> This is a quote block"
+    ul_block = """* This
+* is an
+* unordered list"""
+    ol_block = """1. This
+2. is an
+3. ordered list"""
+    paragraph_block = "This is a normal block"
+    inline_block = "*Hello*"
 
-    result = markdown_to_blocks(markdown)
-    print(result)
+    result = block_to_block_type(code_block)
+    return result
 
 
 main()
