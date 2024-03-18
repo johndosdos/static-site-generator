@@ -128,6 +128,20 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
     return list_split_nodes
 
 
+def markdown_to_blocks(markdown):
+    if not markdown:
+        return []
+
+    block_list = []
+    blocks = re.split(r"\n\n", markdown)
+
+    for block in blocks:
+        if re.search(r"\S", block):
+            block_list.append(block.strip(" \n"))
+
+    return block_list
+
+
 def text_to_textnodes(text):
     node_list = [TextNode(text, "text")]
     node_list = split_nodes_delimiter(node_list, "**", "bold")
@@ -140,10 +154,16 @@ def text_to_textnodes(text):
 
 
 def main():
-    text = "This is **text** with an *italic* word and a `code block` and an ![image](https://i.imgur.com/zjjcJKZ.png) and a [link](https://boot.dev)"
-    textnodes_list = text_to_textnodes(text)
+    markdown = """This is **bolded** paragraph 
 
-    return textnodes_list
+This is another paragraph with *italic* text and `code` here 
+This is the same paragraph on a new line 
+
+* This is a list 
+* with items """
+
+    result = markdown_to_blocks(markdown)
+    print(result)
 
 
 main()
