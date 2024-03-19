@@ -155,36 +155,36 @@ def block_to_block_type(markdown):
     ORDERED_LIST = r"\d.\s"
 
     if re.match(HEADING_1, markdown):
-        return "heading 1"
+        return "h1"
 
     if re.match(HEADING_2, markdown):
-        return "heading 2"
+        return "h2"
 
     if re.match(HEADING_3, markdown):
-        return "heading 3"
+        return "h3"
 
     if re.match(HEADING_4, markdown):
-        return "heading 4"
+        return "h4"
 
     if re.match(HEADING_5, markdown):
-        return "heading 5"
+        return "h5"
 
     if re.match(HEADING_6, markdown):
-        return "heading 6"
+        return "h6"
 
     if re.search(CODE, markdown):
         return "code"
 
     if re.match(QUOTE, markdown):
-        return "quote"
+        return "blockquote"
 
     if re.match(UNORDERED_LIST, markdown):
-        return "unordered list"
+        return "ul"
 
     if re.match(ORDERED_LIST, markdown):
-        return "ordered list"
+        return "ol"
 
-    return "paragraph"
+    return "p"
 
 
 def text_to_textnodes(text):
