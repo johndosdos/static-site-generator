@@ -150,21 +150,21 @@ def block_to_block_type(markdown):
     ORDERED_LIST = r"\d.\s"
 
     if re.match(HEADING, markdown):
-        return "Block type: Heading"
+        return "heading"
 
     if re.search(CODE, markdown):
-        return "Block type: Code"
+        return "code"
 
     if re.match(QUOTE, markdown):
-        return "Block type: Quote"
+        return "quote"
 
     if re.match(UNORDERED_LIST, markdown):
-        return "Block type: Unordered List"
+        return "unordered list"
 
     if re.match(ORDERED_LIST, markdown):
-        return "Block type: Ordered List"
+        return "ordered list"
 
-    return "Block type: Paragraph"
+    return "paragraph"
 
 
 def text_to_textnodes(text):
