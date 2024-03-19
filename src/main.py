@@ -143,14 +143,34 @@ def markdown_to_blocks(markdown):
 
 
 def block_to_block_type(markdown):
-    HEADING = r"\#+\s"
+    HEADING_1 = r"^\#\s"
+    HEADING_2 = r"^\#{2}\s"
+    HEADING_3 = r"^\#{3}\s"
+    HEADING_4 = r"^\#{4}\s"
+    HEADING_5 = r"^\#{5}\s"
+    HEADING_6 = r"^\#{6}\s"
     CODE = r"^\`{3}[\s\S]*?\`{3}$"
     QUOTE = r"\>\s"
     UNORDERED_LIST = r"[\*|\-]\s"
     ORDERED_LIST = r"\d.\s"
 
-    if re.match(HEADING, markdown):
-        return "heading"
+    if re.match(HEADING_1, markdown):
+        return "heading 1"
+
+    if re.match(HEADING_2, markdown):
+        return "heading 2"
+
+    if re.match(HEADING_3, markdown):
+        return "heading 3"
+
+    if re.match(HEADING_4, markdown):
+        return "heading 4"
+
+    if re.match(HEADING_5, markdown):
+        return "heading 5"
+
+    if re.match(HEADING_6, markdown):
+        return "heading 6"
 
     if re.search(CODE, markdown):
         return "code"
