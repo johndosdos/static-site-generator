@@ -198,25 +198,158 @@ def text_to_textnodes(text):
     return node_list
 
 
+def heading_to_html(block, heading_level):
+    heading_number = int(heading_level[-1:])
+    text_nodes = text_to_textnodes(block[heading_number + 1 :])
+    html_nodes = []
+
+    for text_node in text_nodes:
+        html_nodes.append(textnode_to_htmlnode(text_node))
+
+    parent_node = ParentNode(heading_level, html_nodes)
+
+    return parent_node
+
+
+def code_to_html(block, block_type):
+    text_nodes = text_to_textnodes(block)
+    html_nodes = []
+
+    for text_node in text_nodes:
+        if text_node.text != "":
+            html_nodes.append(textnode_to_htmlnode(text_node))
+
+    parent_node = ParentNode("pre", html_nodes)
+
+    return parent_node
+
+
+def quote_to_html(block, block_type):
+    text_nodes = text_to_textnodes(block[2:])
+    html_nodes = []
+
+    for text_node in text_nodes:
+        html_nodes.append(textnode_to_htmlnode(text_node))
+
+    parent_node = ParentNode(block_type, html_nodes)
+
+    return parent_node
+
+
+def ul_to_html(block, block_type):
+    block_parts = re.split(r"[\n-]+\s", block)
+    text_nodes = []
+    html_nodes = []
+    li_parent_nodes = []
+
+    for block_part in block_parts:
+        if block_part != "":
+            text_nodes.append(TextNode(block_part, "text"))
+
+    for text_node in text_nodes:
+        html_node = textnode_to_htmlnode(text_node)
+        li_parent_nodes.append(ParentNode("li", [html_node]))
+
+    parent_node = ParentNode(block_type, li_parent_nodes)
+
+    return parent_node
+
+
+def ol_to_html(block, block_type):
+    block_parts = re.split(r"[\d.\n]+\s", block)
+    text_nodes = []
+    html_nodes = []
+    li_parent_nodes = []
+
+    for block_part in block_parts:
+        if block_part != "":
+            text_nodes.append(TextNode(block_part, "text"))
+
+    for text_node in text_nodes:
+        html_node = textnode_to_htmlnode(text_node)
+        li_parent_nodes.append(ParentNode("li", [html_node]))
+
+    parent_node = ParentNode(block_type, li_parent_nodes)
+
+    return parent_node
+
+
+def para_to_html(block, block_type):
+    text_nodes = text_to_textnodes(block)
+    html_nodes = []
+
+    for text_node in text_nodes:
+        html_nodes.append(textnode_to_htmlnode(text_node))
+
+    parent_node = ParentNode(block_type, html_nodes)
+
+    return parent_node
+
+
+def process_block(block):
+    block_type = block_to_block_type(block)
+
+    if block_type.startswith("h"):
+        return heading_to_html(block, block_type)
+
+    if block_type == "code":
+        return code_to_html(block, block_type)
+
+    if block_type == "blockquote":
+        return quote_to_html(block, block_type)
+
+    if block_type == "ul":
+        return ul_to_html(block, block_type)
+
+    if block_type == "ol":
+        return ol_to_html(block, block_type)
+
+    if block_type == "p":
+        return para_to_html(block, block_type)
+
+
+def markdown_to_htmlnode(markdown):
+    blocks = markdown_to_blocks(markdown)
+    processed_blocks = []
+
+    for block in blocks:
+        processed_blocks.append(process_block(block))
+
+    parent_node = ParentNode("div", processed_blocks)
+
+    return parent_node.to_html()
+
+
 def main():
-    heading_block = "# This is a heading"
-    code_block = """```
-code
+    markdown = """# This is a level 1 heading
 
-block
+## This is a level 2 heading
 
-```"""
-    quote_block = "> This is a quote block"
-    ul_block = """* This
-* is an
-* unordered list"""
-    ol_block = """1. This
-2. is an
-3. ordered list"""
-    paragraph_block = "This is a normal block"
-    inline_block = "*Hello*"
+### This is a level 3 heading
 
-    result = block_to_block_type(code_block)
+#### This is a level 4 heading
+
+##### This is a level 5 heading
+
+###### This is a level 6 heading
+
+``` This is a code block ```
+
+```
+This is also a code block
+```
+
+> This is a quote block
+
+- This is an
+- Unordered list
+
+1. This is an
+2. Ordered list
+
+This is a paragraph."""
+
+    result = markdown_to_htmlnode(markdown)
     return result
 
 
