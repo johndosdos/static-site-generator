@@ -3,7 +3,7 @@ body {
     line-height: 1.6;
     margin: 0;
     padding: 0;
-    background-color: #1f1f23;
+    background-color: #ffffff;
 }
 
 body {
@@ -13,7 +13,6 @@ body {
 }
 
 h1 {
-    color: #ffffff;
     margin-bottom: 20px;
 }
 
@@ -25,4 +24,3 @@ p {
 a {
     color: #6568ff;
 }
-
