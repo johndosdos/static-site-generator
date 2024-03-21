@@ -1,37 +1,25 @@
 from process_nodes import *
+import os
+import shutil
+
+
+def copy_directory(src_path, dst_path):
+    paths = os.listdir(src_path)
+
+    for path in paths:
+        new_src = os.path.join(src_path, path)
+        new_dst = os.path.join(dst_path, path)
+
+        if os.path.isdir(new_src):
+            os.makedirs(new_dst, exist_ok=True)
+            copy_directory(new_src, new_dst)
+
+        elif os.path.isfile(new_src):
+            shutil.copy2(new_src, new_dst)
 
 
 def main():
-    markdown = """# This is a level 1 heading
-
-## This is a level 2 heading
-
-### This is a level 3 heading
-
-#### This is a level 4 heading
-
-##### This is a level 5 heading
-
-###### This is a level 6 heading
-
-``` This is a code block ```
-
-```
-This is also a code block
-```
-
-> This is a quote block
-
-- This is an
-- Unordered list
-
-1. This is an
-2. Ordered list
-
-This is a paragraph."""
-
-    result = markdown_to_htmlnode(markdown)
-    return result
+    copy_directory("static", "public")
 
 
 main()
